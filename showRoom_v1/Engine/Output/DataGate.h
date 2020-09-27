@@ -2,7 +2,7 @@
 #define _CRT_SECURE_NO_WARNINGS
 
 #include <thread> 
-#include "utils/mutexedData.h"
+#include "../Utils/mutexedData.h"
 #include "PcSerial.h"
 #include "wx/log.h"
 

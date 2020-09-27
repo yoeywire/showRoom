@@ -19,22 +19,22 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="DataGate.h" />
-    <ClInclude Include="FxPhase.h" />
-    <ClInclude Include="ledInterface.h" />
-    <ClInclude Include="LedStripObj.h" />
-    <ClInclude Include="main.h" />
-    <ClInclude Include="PcSerial.h" />
-    <ClInclude Include="RgbEngine.h" />
-    <ClInclude Include="utils\mutexedData.h" />
+    <ClCompile Include="Engine\FxPhase.cpp" />
+    <ClCompile Include="Engine\Output\DataGate.cpp" />
+    <ClCompile Include="Engine\Output\PcSerial.cpp" />
+    <ClCompile Include="Engine\RgbEngine.cpp" />
+    <ClCompile Include="Interface\ledInterface.cpp" />
+    <ClCompile Include="Interface\main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="DataGate.cpp" />
-    <ClCompile Include="FxPhase.cpp" />
-    <ClCompile Include="ledInterface.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="PcSerial.cpp" />
-    <ClCompile Include="RgbEngine.cpp" />
+    <ClInclude Include="Engine\FxPhase.h" />
+    <ClInclude Include="Engine\Output\DataGate.h" />
+    <ClInclude Include="Engine\Output\PcSerial.h" />
+    <ClInclude Include="Engine\RgbEngine.h" />
+    <ClInclude Include="Interface\ledInterface.h" />
+    <ClInclude Include="Interface\main.h" />
+    <ClInclude Include="LedStripObj.h" />
+    <ClInclude Include="Engine\Utils\mutexedData.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

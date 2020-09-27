@@ -23,6 +23,7 @@ private:
 	float phaseFlt;
 	float phaseIncr;
 	uint16_t phase;
+	uint16_t direction;
 
 	void checkRange();
 };
