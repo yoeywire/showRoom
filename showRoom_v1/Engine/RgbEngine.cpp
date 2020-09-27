@@ -31,10 +31,10 @@ RgbEngine::RgbEngine() {
 	offCol.g = 0;
 	offCol.b = 0;
 
-	for (auto& w : wave) {
-		w = waveVal / (WAVE_WIDTH-1);
-		waveVal++;
-	}
+//	for (auto& w : wave) {
+//		w = waveVal / (WAVE_WIDTH-1);
+//		waveVal++;
+//	}
 	
 //	for (auto& w : wave) {
 //		if (waveVal < (WAVE_WIDTH - 1) / 2) {
@@ -46,15 +46,15 @@ RgbEngine::RgbEngine() {
 //		waveVal++;
 //	}
 
-//	for (auto& w : wave) {
-//		if (waveVal < (WAVE_WIDTH - 1) / 2) {
-//			w = sin(waveVal*2*3.1415/WAVE_WIDTH);
-//		}
-//		else {
-//			w = 0;
-//		}
-//		waveVal++;
-//	}
+	for (auto& w : wave) {
+		if (waveVal < (WAVE_WIDTH - 1) / 2) {
+			w = sin(waveVal*2*3.1415/WAVE_WIDTH);
+		}
+		else {
+			w = 0;
+		}
+		waveVal++;
+	}
 
 	phase.setGroups(1);
 

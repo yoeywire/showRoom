@@ -2,7 +2,7 @@
 #define _CRT_SECURE_NO_WARNINGS
 
 #include "wx/wx.h"
-#include "rgbEngine.h"
+#include "../Engine/RgbEngine.h"
 
 class main : public wxFrame
 {

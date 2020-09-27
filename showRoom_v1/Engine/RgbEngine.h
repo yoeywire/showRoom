@@ -14,12 +14,12 @@
 // This is needed to make the wx log library work without warnings
 #define _CRT_SECURE_NO_WARNINGS	
 
-#include<string.h>
-#include<iostream>
-#include<array>
-#include"DataGate.h"
-#include"utils/mutexedData.h"
-#include"FxPhase.h"
+#include <string.h>
+#include <iostream>
+#include <array>
+#include "Output/DataGate.h"
+#include "utils/mutexedData.h"
+#include "FxPhase.h"
 
 #include "wx/log.h"
 
