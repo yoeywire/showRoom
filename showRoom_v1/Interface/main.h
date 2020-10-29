@@ -7,15 +7,16 @@
 class main : public wxFrame
 {
 public:
-	main();
+	main(RgbEngine* engine);
 
 	wxButton* m_btn1 = nullptr;
 	wxButton* m_btn2 = nullptr;
 	wxButton* m_btn3 = nullptr;
-	wxButton* m_btn4 = nullptr;
-	wxButton* m_btn5 = nullptr;
+
 	wxSlider* sld1 = nullptr;
 	wxSlider* sld2 = nullptr;
+	wxSlider* sld3 = nullptr;
+	wxSlider* sld4 = nullptr;
 
 	//wxTextCtrl* m_txt1 = nullptr;
 	//wxListBox* m_list1 = nullptr;
@@ -25,10 +26,8 @@ public:
 	void printLn(std::string line);
 
 
-
 	wxDECLARE_EVENT_TABLE();
 
 private:
-	RgbEngine rgbEngine;
+	RgbEngine* rgbEngine = nullptr;
 };
-
