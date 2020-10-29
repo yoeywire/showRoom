@@ -19,7 +19,9 @@
 #include <array>
 #include "Output/DataGate.h"
 #include "utils/mutexedData.h"
-#include "FxPhase.h"
+#include "Utils/EngineStructures.h"
+#include "FxEngine.h"
+
 
 #include "wx/log.h"
 
@@ -34,12 +36,6 @@
 
 enum Mode {staticMode , effectMode1, effectMode2};
 
-struct RgbColor {
-	uint8_t r;
-	uint8_t g;
-	uint8_t b;
-};
-
 
 
 class RgbEngine
@@ -48,37 +44,33 @@ public:
 	RgbEngine();
 	~RgbEngine();
 
-	void inputBtnChange(uint32_t setting);
+	void inputBtnChange(uint32_t buttonID);
 	void inputSldChange(uint32_t sliderID, uint32_t value);
 	
-	
+	void fxParameterChange(FxParameter fxParType, float value);
 
 private:
 	void update();
 	void updateInterrupt();
 	void setColorAll(RgbColor col);
 	void setColorSingle(uint16_t ledNr, RgbColor col);
-	void step(uint16_t widthHigh, uint16_t widthLow, bool reverse, RgbColor col1, RgbColor col2);
 	void rainbow();
+
+
 	std::string leds;
-
 	mutexedData* rgbData = new mutexedData(NUM_LEDS);
-	DataGate* dataGateAddr = new DataGate(rgbData, DATA_SIZE);
 
-	//TimingEngine* timingEngine = new TimingEngine(this);
+	DataGate* dataGateAddr = new DataGate(rgbData, DATA_SIZE);
+	FxEngine* fxEngine = new FxEngine(rgbData);
+
+	//Mode parameters
 	Mode mode = staticMode;
 	RgbColor staticColor;
+	uint8_t dim = 255;
 
 	//Rainbow fx init values
 	uint16_t fade = 0;
 	uint8_t direction = 0;
 	RgbColor rainbowCol;
 
-	//fx init values;
-	FxPhase phase;
-	uint16_t startPh = 360;
-	uint16_t rate = 10;
-	RgbColor offCol;
-	std::array <float, WAVE_WIDTH> wave = {};
-	float waveVal = 0;
 };

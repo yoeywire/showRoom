@@ -21,9 +21,6 @@
     <ClCompile Include="Engine\RgbEngine.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Interface\ledInterface.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Interface\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -33,15 +30,21 @@
     <ClCompile Include="Engine\Output\PcSerial.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Interface\showRoom.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\FxEngine.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Interface\EffectWindow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\FxPhase.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Engine\RgbEngine.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Interface\ledInterface.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Interface\main.h">
@@ -57,6 +60,18 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Utils\mutexedData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\showRoom.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\FxEngine.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Utils\EngineStructures.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\EffectWindow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -4,12 +4,12 @@
 * DESCRIPTION: The core of the led control part of the software. The GUI sends updates to
 * this class, and the class will handle it. The updates will be received intantaneously.
 * This class also determines the RGB values that the leds will have, dependend on the mode
-* that the engine is in. It is being waked up by the timing class (which handles the effect
-* waveforms as well) 30 times/second. So the RGB data is never updated more than 30 times,
-* which would be a waste of processing power.
+* that the engine is in. The RGB data is never updated more than 30 times, which would be 
+* a waste of processing power.
 */
 
 #include "RgbEngine.h"
+
 
 RgbEngine::RgbEngine() {
 	leds.reserve(DATA_SIZE);
@@ -26,37 +26,6 @@ RgbEngine::RgbEngine() {
 	rainbowCol.r = 250;
 	rainbowCol.g = 0;
 	rainbowCol.b = 0;
-
-	offCol.r = 0;
-	offCol.g = 0;
-	offCol.b = 0;
-
-//	for (auto& w : wave) {
-//		w = waveVal / (WAVE_WIDTH-1);
-//		waveVal++;
-//	}
-	
-//	for (auto& w : wave) {
-//		if (waveVal < (WAVE_WIDTH - 1) / 2) {
-//			w = 1;
-//		}
-//		else {
-//			w = 0;
-//		}
-//		waveVal++;
-//	}
-
-	for (auto& w : wave) {
-		if (waveVal < (WAVE_WIDTH - 1) / 2) {
-			w = sin(waveVal*2*3.1415/WAVE_WIDTH);
-		}
-		else {
-			w = 0;
-		}
-		waveVal++;
-	}
-
-	phase.setGroups(1);
 
 	std::thread timingTrigger(&RgbEngine::updateInterrupt, this);
 	timingTrigger.detach();
@@ -88,66 +57,68 @@ void RgbEngine::updateInterrupt() {
 
 
 
+
+
+
 void RgbEngine::update() {
-	if (mode == staticMode) {
+	switch (mode) {
+	case staticMode:
 		setColorAll(staticColor);
 		rgbData->setData(leds);
-	}
-	else if (mode == effectMode1) {
+		break;
+
+	case effectMode1:
 		rainbow();
-	}
-	else if (mode == effectMode2) {
-		step(10, 20, false, staticColor, offCol);
+		break;
+	case effectMode2: 
+		fxEngine->effectUpdate();
+		break;
 	}
 }
 
 
 
-void RgbEngine::inputBtnChange(uint32_t setting) {
-	//wxLogDebug("<rgbEngine> Updating color");
-	if(setting < 10) {
+void RgbEngine::inputBtnChange(uint32_t buttonID) {
+
+	switch (buttonID) {
+	case 10001:
 		mode = staticMode;
-		switch (setting) {
-		case 0:
-			staticColor.r = 250;
-			staticColor.g = 0;
-			staticColor.b = 0;
-			break;
-		case 1:
-			staticColor.r = 0;
-			staticColor.g = 250;
-			staticColor.b = 0;
-			break;
-		case 2:
-			staticColor.r = 0;
-			staticColor.g = 0;
-			staticColor.b = 250;
-			break;
-		}
-	}
-	else {
-		if (setting == 11) {
-			mode = effectMode1;
-		}
-		if (setting == 12) {
-			mode = effectMode2;
-		}
+		break;
+	case 10002:
+		mode = effectMode1;
+		break;
+	case 10003:
+		mode = effectMode2;
+		break;
 	}
 }
+
+
 
 
 
 void RgbEngine::inputSldChange(uint32_t sliderID, uint32_t value) {
+
 	switch (sliderID) {
-	case 10101: 
-		wxLogDebug("<rgbEngine> Updating groups, sliderID: %i", sliderID);
-		phase.setGroups(value);
+	case 10101:	
+		dim = value;
 		break;
 	case 10102: 
-		wxLogDebug("<rgbEngine> Updating rate, sliderID: %i", sliderID);
-		rate = value;
+		staticColor.r = value;
+		break;
+	case 10103:
+		staticColor.g = value;
+		break;
+	case 10104:
+		staticColor.b = value;
 		break;
 	}
+}
+
+
+
+void RgbEngine::fxParameterChange(FxParameter fxParType, float value) {
+
 }
 
 
@@ -188,39 +159,12 @@ void RgbEngine::rainbow() {
 
 
 
-void RgbEngine::step(uint16_t form, uint16_t widthLow, bool reverse, RgbColor col1, RgbColor col2) {
-	
-	RgbColor fxCol;
-	uint16_t phaseBuf;
-	fxCol.r = 0;
-	fxCol.g = 0;
-
-	if (startPh > 360) {
-		startPh -= 360;
-	}
-
-	phase.setStartPhase(startPh);
-	startPh += rate;
-	
-
-	for (int ledCnt = 0; ledCnt < NUM_LEDS; ledCnt++) {
-		phaseBuf = phase.setForNextLed();
-		fxCol.b = 255*wave[phaseBuf];
-		setColorSingle(ledCnt, fxCol);
-	}
-
-	phase.debug();
-	rgbData->setData(leds);
-
-}
-
-
-
+//Function that sets the color of a single LED
 void RgbEngine::setColorSingle(uint16_t ledNr, RgbColor col) {
 	uint16_t ledIt = 3 * ledNr;
-	leds[ledIt] = col.r;
-	leds[ledIt+1] = col.g;
-	leds[ledIt+2] = col.b;
+	leds[ledIt] = col.r * dim / 255;
+	leds[ledIt+1] = col.g * dim / 255;
+	leds[ledIt+2] = col.b * dim / 255;
 }
 
 
@@ -229,9 +173,8 @@ void RgbEngine::setColorSingle(uint16_t ledNr, RgbColor col) {
 void RgbEngine::setColorAll(RgbColor col) {
 	
 	for (int i = 0; i < 3 * NUM_LEDS; i += 3) {
-		leds[i] = col.r;
-		leds[i + 1] = col.g;
-		leds[i + 2] = col.b;
+		leds[i] = col.r * dim / 255;
+		leds[i + 1] = col.g * dim / 255;
+		leds[i + 2] = col.b * dim / 255;
 	}	
 }
-
