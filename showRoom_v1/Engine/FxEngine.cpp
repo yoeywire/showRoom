@@ -14,6 +14,7 @@ FxEngine::FxEngine(mutexedData* RgbData) {
 
 	phase.setGroups(1);
 	generateWave(SIN);
+	calcSpeedIncr();
 
 }
 
@@ -21,6 +22,7 @@ FxEngine::FxEngine(mutexedData* RgbData) {
 
 
 void FxEngine::setFxParameter(FxParameter fxPrm, float value) {
+	wxLogDebug("<fxEngine> Updating fx");
 
 	switch (fxPrm) {
 	case WAVEFORM:
@@ -28,10 +30,12 @@ void FxEngine::setFxParameter(FxParameter fxPrm, float value) {
 		generateWave(form);
 		break;
 	case SPEED:
-
+		bpm = value;
+		calcSpeedIncr();
 		break;
 	case RATE:
-
+		rate = value;
+		calcSpeedIncr();
 		break;
 	case GROUPS:
 		phase.setGroups(value);
@@ -41,29 +45,33 @@ void FxEngine::setFxParameter(FxParameter fxPrm, float value) {
 
 
 
+void FxEngine::setEffectCol(RgbColor col) {
+	col1 = col;
+}
+
+
+
 
 void FxEngine::effectUpdate() {
 
-	RgbColor fxCol;
+
 	uint16_t phaseBuf;
-	fxCol.r = 0;
-	fxCol.g = 0;
 
 	if (startPh > 360) {
 		startPh -= 360;
 	}
 
 	phase.setStartPhase(startPh);	// Set the start phase to the correct value
-	startPh += rate;				// This is done for the next effect frame
+	startPh += speedIncr;				// This is done for the next effect frame
 
 	//Apply the effect to all leds
 	for (int ledCnt = 0; ledCnt < NUM_LEDS; ledCnt++) {
 		phaseBuf = phase.setForNextLed();
-		fxCol.b = 255 * wave[phaseBuf];
-		setColorSingle(ledCnt, fxCol);
+		dim = 255 * wave[phaseBuf];
+		setColorSingle(ledCnt, col1);
 	}
 
-	phase.debug();
+	// phase.debug();
 	rgbData->setData(leds);
 
 }
@@ -109,18 +117,22 @@ void FxEngine::generateWave(WaveFormType waveType) {
 			waveVal++;
 		}
 	}
+
 }
 
 
 //Function that sets the color of a single LED
 void FxEngine::setColorSingle(uint16_t ledNr, RgbColor col) {
 	uint16_t ledIt = 3 * ledNr;
-	leds[ledIt] = col.r;
-	leds[ledIt + 1] = col.g;
-	leds[ledIt + 2] = col.b;
+	leds[ledIt] = col1.r * dim / 255;
+	leds[ledIt + 1] = col1.g * dim / 255;
+	leds[ledIt + 2] = col1.b * dim / 255;
 }
 
 
+void FxEngine::calcSpeedIncr() {
+	speedIncr = (int)(bpm * rate * WAVE_WIDTH) * 0.000277;			// bpm*rate*wavewidth/60 seconds/30 frames * 0.5?
+}
 
 
 //void FxEngine::setColorAll(RgbColor col) {

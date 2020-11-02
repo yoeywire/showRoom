@@ -30,12 +30,13 @@ public:
 	FxEngine(mutexedData* rgbData);
 	void setFxParameter(FxParameter fxPrm, float value);
 	void effectUpdate();
+	void setEffectCol(RgbColor col);
 
 
 private:
 	
 	void setColorSingle(uint16_t ledNr, RgbColor col);
-
+	void calcSpeedIncr();
 	void generateWave(WaveFormType WaveType);
 
 	std::string leds;
@@ -45,14 +46,15 @@ private:
 
 	//fx foreground parameters
 	WaveFormType form = SIN;
-	float BPM = 120;
-	float multiplier = 1;
+	float bpm = 120;
+	float rate = 1;
 	uint16_t startPh = 360;
 	RgbColor col1;
 	RgbColor col2;
 
 	//fx background values
-	uint16_t rate = 10;
+	uint16_t speedIncr = 10;
+	uint8_t dim = 0;
 
 	std::array <float, WAVE_WIDTH> wave = {};
 	float waveVal = 0;

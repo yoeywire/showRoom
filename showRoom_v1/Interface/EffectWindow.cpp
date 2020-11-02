@@ -1,54 +1,37 @@
 #include "EffectWindow.h"
 
 wxBEGIN_EVENT_TABLE(EffectWindow, wxFrame)
-EVT_GRID_CELL_CHANGING(EffectWindow::TableValueChanged, 11001)
+EVT_CHOICE(20001, ChoiceValueChanged)
+EVT_CHOICE(20002, ChoiceValueChanged)
+EVT_TEXT(20003, TextValueChanged)
+EVT_TEXT(20004, TextValueChanged)
+EVT_TEXT(20005, TextValueChanged)
 wxEND_EVENT_TABLE()
 
 
 
-EffectWindow::EffectWindow(RgbEngine* engine) : wxFrame(nullptr, wxID_ANY, "Effect Window", wxPoint(550, 250), wxSize(880, 350))
+EffectWindow::EffectWindow(RgbEngine* engine) : wxFrame(nullptr, wxID_ANY, "Effect Window", wxPoint(550, 250), wxSize(400, 350))
 {
 	rgbEngine = engine;
 
-	fxTable = new wxGrid(this, 11001, wxPoint(0, 0), wxSize(900, 350));
-	align = new wxGridCellAttr();
+	wxString attributes[2] = { wxT("Dim"), wxT("Color") };
+	wxString waveforms[3] = { wxT("Sin"), wxT("Ramp"), wxT("Step") };
 
-	//fxTable->Bind(wxEVT_GRID_CELL_CHANGED, &EffectWindow::TableValueChanged, this, 11001);
+	// Attribute and waveform choice boxes:
+	attrTxt = new wxStaticText(this, 22001, wxT("Attribute:"), wxPoint(10, 13), wxDefaultSize);
+	formTxt = new wxStaticText(this, 22002, wxT("Waveform:"), wxPoint(190, 13), wxDefaultSize);
+	attrBox = new wxChoice(this, 20001, wxPoint(70, 10), wxSize(80, 25), 2, attributes);
+	attrBox->SetSelection(0);
+	formBox = new wxChoice(this, 20002, wxPoint(260, 10), wxSize(80, 25), 2, waveforms);
+	formBox->SetSelection(0);
 
-	fxTable->SetDefaultRowSize(60, true);
-	fxTable->SetDefaultColSize(150, true);
-	fxTable->CreateGrid(1, 5);
-
-	// We can set the sizes of individual rows and columns
-	fxTable->SetRowSize(0, 60);
-	fxTable->SetColSize(0, 150);
-
-	align->SetAlignment(wxALIGN_CENTRE, wxALIGN_CENTRE);
-	fxTable->SetColAttr(0, align);
-	fxTable->SetColAttr(1, align);
-	fxTable->SetColAttr(2, align);
-	fxTable->SetColAttr(3, align);
-	fxTable->SetColAttr(4, align);
-
-	// FxTable colum names
-	fxTable->SetColLabelValue(0, "Attribute");
-	fxTable->SetColLabelValue(1, "Waveform");
-	fxTable->SetColLabelValue(2, "Speed [BPM]");
-	fxTable->SetColLabelValue(3, "Rate");
-	fxTable->SetColLabelValue(4, "Groups");
-
-	// Initial effect values
-	fxTable->SetCellValue(0, 0, "Dim");
-	fxTable->SetCellValue(0, 2, "120");
-	fxTable->SetCellValue(0, 3, "x1");
-	fxTable->SetCellValue(0, 4, "16");
-
-	wxString waveforms[3] = { wxT("Sin"), wxT("Ramp"), wxT("Step") };	// Make table strings
-	fxTable->SetCellEditor(0, 1, new wxGridCellChoiceEditor(3, waveforms, false)); // Add this to Cell
-	fxTable->SetCellValue(0, 1, wxT("Sin"));
-
-
-	attributeSel = new wxComboBox(this, 10201, "Sin", wxPoint());
+	// Speed, rate and groups:
+	speedTxt = new wxStaticText(this, 22003, wxT("Speed:"), wxPoint(10, 53), wxDefaultSize);
+	rateTxt = new wxStaticText(this, 22004, wxT("Rate:"), wxPoint(10, 93), wxDefaultSize);
+	groupsTxt = new wxStaticText(this, 22005, wxT("Groups:"), wxPoint(10, 133), wxDefaultSize);
+	speedVal = new wxTextCtrl(this, 20003, wxT("120"), wxPoint(70, 50), wxSize(80, 22));
+	rateVal = new wxTextCtrl(this, 20004, wxT("1x"), wxPoint(70, 90), wxSize(80, 22));
+	groupsVal = new wxTextCtrl(this, 20005, wxT("1"), wxPoint(70, 130), wxSize(80, 22));
 
 	wxLog* logger = new wxLogStream();
 	wxLog::SetActiveTarget(logger);
@@ -56,37 +39,40 @@ EffectWindow::EffectWindow(RgbEngine* engine) : wxFrame(nullptr, wxID_ANY, "Effe
 
 
 
-void EffectWindow::OnButtonClicked(wxCommandEvent& evt)
+void EffectWindow::TextValueChanged(wxCommandEvent& evt) 
 {
-	int buttonId = evt.GetId();
-	wxLogDebug("<Effect Window> Button %d pressed", evt.GetId());
+	double entVal = 0;
+	if (!evt.GetString().ToDouble(&entVal)) {
+		//TODO: set value back to last value
+	}
 
-	switch (buttonId) {
-	case 10001:
+	switch (evt.GetId()) {
+	case 20003:
+		rgbEngine->fxParameterChange(SPEED, entVal);
+		break;	
+	case 20004:
+		rgbEngine->fxParameterChange(RATE, entVal);
+		break;	
+	case 20005:
+		rgbEngine->fxParameterChange(GROUPS, entVal);
 		break;
 	}
+
 	evt.Skip();
 }
 
 
 
-void EffectWindow::TableValueChanged(wxGridEvent& evt) {
-	wxLogDebug("<Effect Window> Grid change: %d cell: %d, %d data: %d", evt.GetId(), evt.GetCol(), evt.GetRow(), evt.GetSelection());
+void EffectWindow::ChoiceValueChanged(wxCommandEvent& evt) 
+{
+	wxLogDebug("<EffectWindow> Value changed");
 
-	switch (evt.GetCol()) {
-	case 0: 
-		fxTable->SetCellValue(0, 0, "Dim");
+	switch (evt.GetId()) {
+	case 20001:
 		break;
-	case 1:
-		rgbEngine->fxParameterChange(WAVEFORM, 0);
-		break;
-	case 2:
-		double paramBuf;
-		evt.GetString().ToDouble(&paramBuf);
-		rgbEngine->fxParameterChange(SPEED, static_cast<float>(paramBuf));
-		break;
-	case 3:
-		//fxTable->SetCellValue(0, 0, "Dim");
+
+	case 20002:
+		rgbEngine->fxParameterChange(WAVEFORM, evt.GetInt());
 		break;
 	}
 

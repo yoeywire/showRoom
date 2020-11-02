@@ -8,6 +8,7 @@ struct RgbColor {
 	uint8_t b;
 };
 
+enum FileType {EFFECT};
 
 enum FxParameter { WAVEFORM, SPEED, RATE, GROUPS };
-enum WaveFormType { SIN, RAMP, STEP };
+enum WaveFormType { SIN, RAMP, STEP};
