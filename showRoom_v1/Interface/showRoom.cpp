@@ -4,7 +4,7 @@ wxIMPLEMENT_APP(showRoom);
 
 bool showRoom::OnInit() {
 
-	mainFrame = new main(rgbEngine);
+	mainFrame = new mainWindow(rgbEngine);
 	mainFrame->Show();
 
 	effectFrame = new EffectWindow(rgbEngine);

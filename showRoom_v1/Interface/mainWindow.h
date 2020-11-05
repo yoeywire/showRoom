@@ -4,10 +4,10 @@
 #include "wx/wx.h"
 #include "../Engine/MainEngine.h"
 
-class main : public wxFrame
+class mainWindow : public wxFrame
 {
 public:
-	main(MainEngine* engine);
+	mainWindow(MainEngine* engine);
 
 	wxButton* m_btn1 = nullptr;
 	wxButton* m_btn2 = nullptr;
@@ -18,13 +18,15 @@ public:
 	wxSlider* sld3 = nullptr;
 	wxSlider* sld4 = nullptr;
 
+	wxMenuBar* menubar = nullptr;
+	wxMenu* fileMenu = nullptr;
+
 	//wxTextCtrl* m_txt1 = nullptr;
 	//wxListBox* m_list1 = nullptr;
 
 	void OnButtonClicked(wxCommandEvent& evt);
 	void sliderChange(wxCommandEvent& evt);
-	void printLn(std::string line);
-
+	void OnQuit(wxCommandEvent& event);
 
 	wxDECLARE_EVENT_TABLE();
 

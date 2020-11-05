@@ -8,8 +8,10 @@
 #include <string>
 
 #include "Utils/EngineStructures.h"
-#include "FxPhase.h"
 #include "Utils/mutexedData.h"
+#include "Utils/Effect.h"
+#include "FxPhase.h"
+
 
 
 // Number of leds are defined, as well as the number of bytes
@@ -37,32 +39,25 @@ private:
 	
 	void setColorSingle(uint16_t ledNr, RgbColor col);
 	void calcSpeedIncr();
-	void generateWave(WaveFormType WaveType);
+	void generateWave();
 
 	std::string leds;
 	mutexedData* rgbData =  nullptr;
 	FxPhase phase;
 
 
-	//fx foreground parameters
-	WaveFormType form = SIN;
-	float bpm = 60;
-	float rate = 1;
-	Direction dir = REVERSE;
-	int16_t startPh = 360;
-	RgbColor col1;
-	RgbColor col2;
-	int16_t high = 100;
-	int16_t low = -100;
-	int16_t duty = 50;
+	//fx foreground parameters (stored inside effect structure)
+	Effect curFx;
+	
 
 	//fx background values
-	uint16_t speedIncr = 10;
+	int16_t startPh = 0;
+	uint16_t speedIncr = 0;
 	uint8_t dim = 0;
-	float highF = high;
-	float lowF = low;
-	uint8_t hiloDif = highF - lowF;
-	uint8_t hiloAvr = (highF+lowF)/2;
+	float highF;
+	float lowF;
+	int16_t hiloDif;
+	int16_t hiloAvr;
 
 	std::array <float, WAVE_WIDTH> wave = {};
 	float waveVal = 0;
