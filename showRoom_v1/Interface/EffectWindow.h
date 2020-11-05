@@ -10,12 +10,20 @@ class EffectWindow : public wxFrame
 public:
 	EffectWindow(RgbEngine* engine);
 
-	wxGrid* fxTable = nullptr;
-	wxGridCellAttr* align = nullptr;
-	wxComboBox* attributeSel = nullptr;
+	wxChoice* attrBox = nullptr;
+	wxChoice* formBox = nullptr;
+	wxStaticText* attrTxt = nullptr;
+	wxStaticText* formTxt = nullptr;
 
-	void OnButtonClicked(wxCommandEvent& evt);
-	void TableValueChanged(wxGridEvent& evt);
+	wxTextCtrl* speedVal = nullptr;
+	wxTextCtrl* rateVal = nullptr;
+	wxTextCtrl* groupsVal = nullptr;
+	wxStaticText* speedTxt = nullptr;
+	wxStaticText* rateTxt = nullptr;
+	wxStaticText* groupsTxt = nullptr;
+
+	void TextValueChanged(wxCommandEvent& evt);
+	void ChoiceValueChanged(wxCommandEvent& evt);
 
 	wxDECLARE_EVENT_TABLE();
 	

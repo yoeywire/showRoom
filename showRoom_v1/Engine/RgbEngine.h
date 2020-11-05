@@ -17,11 +17,13 @@
 #include <string.h>
 #include <iostream>
 #include <array>
+
 #include "Output/DataGate.h"
 #include "utils/mutexedData.h"
 #include "Utils/EngineStructures.h"
 #include "FxEngine.h"
-
+#include "StorageHandle.h"
+#include "Utils/Effect.h"
 
 #include "wx/log.h"
 

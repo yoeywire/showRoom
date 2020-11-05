@@ -23,12 +23,21 @@ RgbEngine::RgbEngine() {
 	staticColor.g = 255;
 	staticColor.b = 255;
 
+	fxEngine->setEffectCol(staticColor);
+
 	rainbowCol.r = 250;
 	rainbowCol.g = 0;
 	rainbowCol.b = 0;
 
 	std::thread timingTrigger(&RgbEngine::updateInterrupt, this);
 	timingTrigger.detach();
+
+	Effect fx;
+	StorageHandle store;
+
+	store.setEffect(1, fx);
+	store.getEffect(1);
+
 }
 
 
@@ -113,12 +122,14 @@ void RgbEngine::inputSldChange(uint32_t sliderID, uint32_t value) {
 		staticColor.b = value;
 		break;
 	}
+
+	fxEngine->setEffectCol(staticColor);
 }
 
 
 
 void RgbEngine::fxParameterChange(FxParameter fxParType, float value) {
-
+	fxEngine->setFxParameter(fxParType, value);
 }
 
 
@@ -171,7 +182,6 @@ void RgbEngine::setColorSingle(uint16_t ledNr, RgbColor col) {
 
 
 void RgbEngine::setColorAll(RgbColor col) {
-	
 	for (int i = 0; i < 3 * NUM_LEDS; i += 3) {
 		leds[i] = col.r * dim / 255;
 		leds[i + 1] = col.g * dim / 255;

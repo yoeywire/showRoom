@@ -27,8 +27,10 @@
     <ClCompile Include="Engine\FxEngine.cpp" />
     <ClCompile Include="Interface\showRoom.cpp" />
     <ClCompile Include="Interface\main.cpp" />
+    <ClCompile Include="Engine\StorageHandle.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Engine\Utils\Effect.h" />
     <ClInclude Include="Interface\EffectWindow.h" />
     <ClInclude Include="Engine\FxPhase.h" />
     <ClInclude Include="Engine\Output\DataGate.h" />
@@ -40,6 +42,7 @@
     <ClInclude Include="Interface\main.h" />
     <ClInclude Include="LedStripObj.h" />
     <ClInclude Include="Engine\Utils\mutexedData.h" />
+    <ClInclude Include="Engine\StorageHandle.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
