@@ -13,7 +13,7 @@ FxEngine::FxEngine(mutexedData* RgbData) {
 	}
 
 	phase.setGroups(1);
-	generateWave(SIN);
+	generateWave(INVRAMP);
 	calcSpeedIncr();
 
 }
@@ -37,8 +37,24 @@ void FxEngine::setFxParameter(FxParameter fxPrm, float value) {
 		rate = value;
 		calcSpeedIncr();
 		break;
+	case DIRECTION:
+		dir = static_cast<Direction>(static_cast<int>(value));
+		calcSpeedIncr();
+		break;
 	case GROUPS:
 		phase.setGroups(value);
+		break;
+	case HIGH:
+		high = value;
+		generateWave(form);
+		break;
+	case LOW:
+		low = value;
+		generateWave(form);
+		break;
+	case DUTYCYCLE:
+		duty = value;
+		generateWave(form);
 		break;
 	}
 }
@@ -54,15 +70,17 @@ void FxEngine::setEffectCol(RgbColor col) {
 
 void FxEngine::effectUpdate() {
 
+	uint16_t phaseBuf = 0;
+	phase.setStartPhase(startPh);		// Set the start phase to the correct value
 
-	uint16_t phaseBuf;
-
+	startPh += speedIncr;			// This is done for the next frame
+	
 	if (startPh > 360) {
 		startPh -= 360;
 	}
-
-	phase.setStartPhase(startPh);	// Set the start phase to the correct value
-	startPh += speedIncr;				// This is done for the next effect frame
+	else if (startPh < 0) {
+		startPh += 360;
+	}
 
 	//Apply the effect to all leds
 	for (int ledCnt = 0; ledCnt < NUM_LEDS; ledCnt++) {
@@ -78,15 +96,24 @@ void FxEngine::effectUpdate() {
 
 
 
+
 void FxEngine::generateWave(WaveFormType waveType) {
 
 	//reset the counter
 	waveVal = 0;
 
+	//TODO: Make this work with floats!
+	highF = (float) high*0.01;
+	lowF = (float) low*0.01;
+	hiloDif = high - low;
+	hiloAvr = (high + low) / 2;
+
+
 	// Sinewave
 	if (waveType == SIN) {
+
 		for (auto& w : wave) {
-			w = sin(waveVal * 2 * 3.1415 / WAVE_WIDTH);
+			w = (hiloDif*0.5*sin(waveVal * 2 * 3.1415 / WAVE_WIDTH) + 0.5 + hiloAvr) / 100;
 			if (w < 0) {
 				w = 0;
 			}
@@ -99,20 +126,46 @@ void FxEngine::generateWave(WaveFormType waveType) {
 
 	// Ramp
 	else if (waveType == RAMP) {
+
 		for (auto& w : wave) {
-			w = waveVal / (WAVE_WIDTH - 1);
+			w = (hiloDif*waveVal/(WAVE_WIDTH-1) + hiloAvr - (hiloDif / 2)) / 100;
+
+			if (w < 0) {
+				w = 0;
+			}
+			else if (w > 1) {
+				w = 1;
+			}
 			waveVal++;
 		}
+	}
+
+	else if (waveType == INVRAMP) {
+		for (auto& w : wave) {
+			w = (hiloDif * (WAVE_WIDTH - waveVal) / (WAVE_WIDTH - 1) + hiloAvr - (hiloDif / 2)) / 100;
+			waveVal++;
+
+			if (w < 0) {
+				w = 0;
+			}
+			else if (w > 1) {
+				w = 1;
+			}
+		}
+
 	}
 	
 	// Step
 	else if (waveType == STEP) {
+		float hiF = (float)high*0.01;
+		float loF = (float)low*0.01;
+
 		for (auto& w : wave) {
-			if (waveVal < (WAVE_WIDTH - 1) / 2) {
-				w = 1;
+			if (waveVal < duty*0.01*(WAVE_WIDTH - 1)) {
+				w = hiF;
 			}
 			else {
-				w = 0;
+				w = loF;
 			}
 			waveVal++;
 		}
@@ -132,6 +185,8 @@ void FxEngine::setColorSingle(uint16_t ledNr, RgbColor col) {
 
 void FxEngine::calcSpeedIncr() {
 	speedIncr = (int)(bpm * rate * WAVE_WIDTH) * 0.000277;			// bpm*rate*wavewidth/60 seconds/30 frames * 0.5?
+	if (dir == REVERSE)
+		speedIncr = -speedIncr;
 }
 
 

@@ -1,17 +1,17 @@
-/*NAME:		RgbEngine.cpp
+/*NAME:		MainEngine.h
 * AUTHOR:	Yoran Staal
 *
-* DESCRIPTION: The core of the led control part of the software. The GUI sends updates to
-* this class, and the class will handle it. The updates will be received intantaneously.
-* This class also determines the RGB values that the leds will have, dependend on the mode
-* that the engine is in. The RGB data is never updated more than 30 times, which would be 
-* a waste of processing power.
+* DESCRIPTION: The core of the control part of the software. The GUI sends all updates to
+* this class, and they will be handles here. The updates will be received intantaneously.
+* There is also a seperate thread that takes care of frame updates (30 FPS). Dependend on
+* the mode that the engine is in it will write the static RGB values or let the fxEngine
+* class take care of it.
 */
 
-#include "RgbEngine.h"
+#include "MainEngine.h"
 
 
-RgbEngine::RgbEngine() {
+MainEngine::MainEngine() {
 	leds.reserve(DATA_SIZE);
 	for (uint32_t i = 0; i < DATA_SIZE; i++) {
 		leds.push_back(0x00);
@@ -29,10 +29,10 @@ RgbEngine::RgbEngine() {
 	rainbowCol.g = 0;
 	rainbowCol.b = 0;
 
-	std::thread timingTrigger(&RgbEngine::updateInterrupt, this);
+	std::thread timingTrigger(&MainEngine::updateInterrupt, this);
 	timingTrigger.detach();
 
-	Effect fx;
+	Effect fx{ "Test2", RAMP, 110, 1, 360, 100, 0, 1, 1, 0, {255, 255, 0}};
 	StorageHandle store;
 
 	store.setEffect(1, fx);
@@ -42,14 +42,14 @@ RgbEngine::RgbEngine() {
 
 
 
-RgbEngine::~RgbEngine() {
+MainEngine::~MainEngine() {
 	delete rgbData;
 	delete dataGateAddr;
 }
 
 
 
-void RgbEngine::updateInterrupt() {
+void MainEngine::updateInterrupt() {
 	std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
 	std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
 
@@ -69,7 +69,7 @@ void RgbEngine::updateInterrupt() {
 
 
 
-void RgbEngine::update() {
+void MainEngine::update() {
 	switch (mode) {
 	case staticMode:
 		setColorAll(staticColor);
@@ -87,7 +87,7 @@ void RgbEngine::update() {
 
 
 
-void RgbEngine::inputBtnChange(uint32_t buttonID) {
+void MainEngine::inputBtnChange(uint32_t buttonID) {
 
 	switch (buttonID) {
 	case 10001:
@@ -106,7 +106,7 @@ void RgbEngine::inputBtnChange(uint32_t buttonID) {
 
 
 
-void RgbEngine::inputSldChange(uint32_t sliderID, uint32_t value) {
+void MainEngine::inputSldChange(uint32_t sliderID, uint32_t value) {
 
 	switch (sliderID) {
 	case 10101:	
@@ -128,13 +128,13 @@ void RgbEngine::inputSldChange(uint32_t sliderID, uint32_t value) {
 
 
 
-void RgbEngine::fxParameterChange(FxParameter fxParType, float value) {
+void MainEngine::fxParameterChange(FxParameter fxParType, float value) {
 	fxEngine->setFxParameter(fxParType, value);
 }
 
 
 
-void RgbEngine::rainbow() {
+void MainEngine::rainbow() {
 
 	if (fade > 240) {
 		if (direction == 2) {
@@ -171,7 +171,7 @@ void RgbEngine::rainbow() {
 
 
 //Function that sets the color of a single LED
-void RgbEngine::setColorSingle(uint16_t ledNr, RgbColor col) {
+void MainEngine::setColorSingle(uint16_t ledNr, RgbColor col) {
 	uint16_t ledIt = 3 * ledNr;
 	leds[ledIt] = col.r * dim / 255;
 	leds[ledIt+1] = col.g * dim / 255;
@@ -181,7 +181,7 @@ void RgbEngine::setColorSingle(uint16_t ledNr, RgbColor col) {
 
 
 
-void RgbEngine::setColorAll(RgbColor col) {
+void MainEngine::setColorAll(RgbColor col) {
 	for (int i = 0; i < 3 * NUM_LEDS; i += 3) {
 		leds[i] = col.r * dim / 255;
 		leds[i + 1] = col.g * dim / 255;

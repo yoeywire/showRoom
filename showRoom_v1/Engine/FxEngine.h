@@ -46,15 +46,23 @@ private:
 
 	//fx foreground parameters
 	WaveFormType form = SIN;
-	float bpm = 120;
+	float bpm = 60;
 	float rate = 1;
-	uint16_t startPh = 360;
+	Direction dir = REVERSE;
+	int16_t startPh = 360;
 	RgbColor col1;
 	RgbColor col2;
+	int16_t high = 100;
+	int16_t low = -100;
+	int16_t duty = 50;
 
 	//fx background values
 	uint16_t speedIncr = 10;
 	uint8_t dim = 0;
+	float highF = high;
+	float lowF = low;
+	uint8_t hiloDif = highF - lowF;
+	uint8_t hiloAvr = (highF+lowF)/2;
 
 	std::array <float, WAVE_WIDTH> wave = {};
 	float waveVal = 0;

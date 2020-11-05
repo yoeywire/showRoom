@@ -12,7 +12,7 @@ wxEND_EVENT_TABLE()
 
 
 
-main::main(RgbEngine* engine) : wxFrame(nullptr, wxID_ANY, "ShowRoom Main Window", wxPoint(20, 150), wxSize(510, 400))
+main::main(MainEngine* engine) : wxFrame(nullptr, wxID_ANY, "ShowRoom Main Window", wxPoint(20, 150), wxSize(510, 400))
 {
 	rgbEngine = engine;
 

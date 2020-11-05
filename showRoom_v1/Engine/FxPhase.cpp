@@ -7,14 +7,18 @@ FxPhase::FxPhase() {
 	phaseIncr = 0;
 }
 
+
 void FxPhase::setGroups(uint16_t groups) {
 	phaseIncr = (float) WAVE_WIDTH / groups;
 }
 
+
 void FxPhase::setStartPhase(uint16_t newPhase) {
 	phaseFlt = WAVE_WIDTH * newPhase / 360;
 	checkRange();
+	//wxLogDebug("<fxPhase> StartPhase: %d", newPhase);
 }
+
 
 uint16_t FxPhase::setForNextLed() {
 	phaseFlt += phaseIncr;
@@ -27,5 +31,8 @@ uint16_t FxPhase::setForNextLed() {
 void FxPhase::checkRange() {
 	if (phaseFlt >= WAVE_WIDTH) {
 		phaseFlt = phaseFlt - WAVE_WIDTH;
+	}	
+	else if (phaseFlt < 0) {
+		phaseFlt = phaseFlt + WAVE_WIDTH;
 	}
 }
