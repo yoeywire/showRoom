@@ -12,9 +12,10 @@ struct Effect {
 	float rate = 1;
 	uint16_t phase = 0;
 
-	uint16_t groups = 1;
-	uint16_t blocks = 1;
-	uint16_t wings = 0;
+	uint16_t high, low;
+	uint16_t groups, blocks, wings;
 
 	RgbColor color;
 };
+
+

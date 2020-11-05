@@ -18,9 +18,6 @@
     <ClCompile Include="Engine\FxPhase.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\RgbEngine.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Interface\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -42,12 +39,12 @@
     <ClCompile Include="Engine\StorageHandle.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\MainEngine.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\FxPhase.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\RgbEngine.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Interface\main.h">
@@ -81,6 +78,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Engine\StorageHandle.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\MainEngine.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

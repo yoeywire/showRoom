@@ -3,17 +3,19 @@
 
 #include "wx/wx.h"
 #include <wx/grid.h>
-#include "../Engine/RgbEngine.h"
+#include "../Engine/MainEngine.h"
 
 class EffectWindow : public wxFrame
 {
 public:
-	EffectWindow(RgbEngine* engine);
+	EffectWindow(MainEngine* engine);
 
 	wxChoice* attrBox = nullptr;
 	wxChoice* formBox = nullptr;
+	wxChoice* dirBox = nullptr;
 	wxStaticText* attrTxt = nullptr;
 	wxStaticText* formTxt = nullptr;
+	wxStaticText* dirTxt = nullptr;
 
 	wxTextCtrl* speedVal = nullptr;
 	wxTextCtrl* rateVal = nullptr;
@@ -22,6 +24,13 @@ public:
 	wxStaticText* rateTxt = nullptr;
 	wxStaticText* groupsTxt = nullptr;
 
+	wxStaticText* highTxt = nullptr;
+	wxStaticText* lowTxt = nullptr;
+	wxStaticText* dutyTxt = nullptr;
+	wxTextCtrl* highVal = nullptr;
+	wxTextCtrl* lowVal = nullptr;
+	wxTextCtrl* dutyVal = nullptr;
+
 	void TextValueChanged(wxCommandEvent& evt);
 	void ChoiceValueChanged(wxCommandEvent& evt);
 
@@ -29,6 +38,6 @@ public:
 	
 
 private:
-	RgbEngine* rgbEngine = nullptr;
+	MainEngine* engine = nullptr;
 };
 

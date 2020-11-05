@@ -1,5 +1,6 @@
 #pragma once
 #include <cstdint>
+#include <iostream> // std::cout
 
 
 struct RgbColor {
@@ -9,6 +10,6 @@ struct RgbColor {
 };
 
 enum FileType {EFFECT};
-
-enum FxParameter { WAVEFORM, SPEED, RATE, GROUPS };
-enum WaveFormType { SIN, RAMP, STEP};
+enum FxParameter { WAVEFORM, SPEED, RATE, DIRECTION, GROUPS, HIGH, LOW, DUTYCYCLE };
+enum WaveFormType { SIN, RAMP, INVRAMP, STEP};
+enum Direction {FORWARD, REVERSE};

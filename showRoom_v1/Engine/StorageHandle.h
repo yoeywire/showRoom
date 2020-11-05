@@ -13,6 +13,11 @@
 
 
 
+std::ostream& operator<<(std::ostream& os, const Effect& fx);
+std::ostream& operator<<(std::ostream& os, const RgbColor& col);
+std::istream& operator>>(std::istream& is, const Effect& fx);
+
+
 
 class StorageHandle
 {

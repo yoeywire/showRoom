@@ -2,12 +2,12 @@
 #define _CRT_SECURE_NO_WARNINGS
 
 #include "wx/wx.h"
-#include "../Engine/RgbEngine.h"
+#include "../Engine/MainEngine.h"
 
 class main : public wxFrame
 {
 public:
-	main(RgbEngine* engine);
+	main(MainEngine* engine);
 
 	wxButton* m_btn1 = nullptr;
 	wxButton* m_btn2 = nullptr;
@@ -29,5 +29,5 @@ public:
 	wxDECLARE_EVENT_TABLE();
 
 private:
-	RgbEngine* rgbEngine = nullptr;
+	MainEngine* rgbEngine = nullptr;
 };

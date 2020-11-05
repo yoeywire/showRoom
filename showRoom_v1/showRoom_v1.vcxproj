@@ -23,7 +23,7 @@
     <ClCompile Include="Engine\FxPhase.cpp" />
     <ClCompile Include="Engine\Output\DataGate.cpp" />
     <ClCompile Include="Engine\Output\PcSerial.cpp" />
-    <ClCompile Include="Engine\RgbEngine.cpp" />
+    <ClCompile Include="Engine\MainEngine.cpp" />
     <ClCompile Include="Engine\FxEngine.cpp" />
     <ClCompile Include="Interface\showRoom.cpp" />
     <ClCompile Include="Interface\main.cpp" />
@@ -35,7 +35,7 @@
     <ClInclude Include="Engine\FxPhase.h" />
     <ClInclude Include="Engine\Output\DataGate.h" />
     <ClInclude Include="Engine\Output\PcSerial.h" />
-    <ClInclude Include="Engine\RgbEngine.h" />
+    <ClInclude Include="Engine\MainEngine.h" />
     <ClInclude Include="Engine\FxEngine.h" />
     <ClInclude Include="Engine\Utils\EngineStructures.h" />
     <ClInclude Include="Interface\showRoom.h" />

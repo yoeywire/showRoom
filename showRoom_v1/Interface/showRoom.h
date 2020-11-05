@@ -4,7 +4,7 @@
 #include "wx/wx.h"
 #include "main.h"
 #include "EffectWindow.h"
-#include "../Engine/RgbEngine.h"
+#include "../Engine/MainEngine.h"
 
 
 class showRoom : public wxApp
@@ -13,7 +13,7 @@ public:
 	virtual bool OnInit();
 
 private:
-	RgbEngine* rgbEngine = new RgbEngine;
+	MainEngine* rgbEngine = new MainEngine;
 
 	main* mainFrame = nullptr;
 	EffectWindow* effectFrame = nullptr;
