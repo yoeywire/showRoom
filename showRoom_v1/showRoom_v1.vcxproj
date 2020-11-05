@@ -26,7 +26,7 @@
     <ClCompile Include="Engine\MainEngine.cpp" />
     <ClCompile Include="Engine\FxEngine.cpp" />
     <ClCompile Include="Interface\showRoom.cpp" />
-    <ClCompile Include="Interface\main.cpp" />
+    <ClCompile Include="Interface\mainWindow.cpp" />
     <ClCompile Include="Engine\StorageHandle.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -39,8 +39,7 @@
     <ClInclude Include="Engine\FxEngine.h" />
     <ClInclude Include="Engine\Utils\EngineStructures.h" />
     <ClInclude Include="Interface\showRoom.h" />
-    <ClInclude Include="Interface\main.h" />
-    <ClInclude Include="LedStripObj.h" />
+    <ClInclude Include="Interface\mainWindow.h" />
     <ClInclude Include="Engine\Utils\mutexedData.h" />
     <ClInclude Include="Engine\StorageHandle.h" />
   </ItemGroup>
@@ -146,10 +145,12 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(WXWIN)\include; $(WXWIN)\include\msvc</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(WXWIN)\lib\vc_lib</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -160,12 +161,14 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(WXWIN)\include; $(WXWIN)\include\msvc</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(WXWIN)\lib\vc_lib</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

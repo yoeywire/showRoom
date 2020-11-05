@@ -13,7 +13,7 @@ FxEngine::FxEngine(mutexedData* RgbData) {
 	}
 
 	phase.setGroups(1);
-	generateWave(INVRAMP);
+	generateWave();
 	calcSpeedIncr();
 
 }
@@ -26,35 +26,35 @@ void FxEngine::setFxParameter(FxParameter fxPrm, float value) {
 
 	switch (fxPrm) {
 	case WAVEFORM:
-		form = static_cast<WaveFormType>(static_cast<int>(value));
-		generateWave(form);
+		curFx.form = static_cast<WaveFormType>(static_cast<int>(value));
+		generateWave();
 		break;
 	case SPEED:
-		bpm = value;
+		curFx.bpm = value;
 		calcSpeedIncr();
 		break;
 	case RATE:
-		rate = value;
+		curFx.bpm = value;
 		calcSpeedIncr();
 		break;
 	case DIRECTION:
-		dir = static_cast<Direction>(static_cast<int>(value));
+		curFx.direction = static_cast<Direction>(static_cast<int>(value));
 		calcSpeedIncr();
 		break;
 	case GROUPS:
 		phase.setGroups(value);
 		break;
 	case HIGH:
-		high = value;
-		generateWave(form);
+		curFx.high = value;
+		generateWave();
 		break;
 	case LOW:
-		low = value;
-		generateWave(form);
+		curFx.low = value;
+		generateWave();
 		break;
 	case DUTYCYCLE:
-		duty = value;
-		generateWave(form);
+		curFx.dutycycle = value;
+		generateWave();
 		break;
 	}
 }
@@ -62,7 +62,7 @@ void FxEngine::setFxParameter(FxParameter fxPrm, float value) {
 
 
 void FxEngine::setEffectCol(RgbColor col) {
-	col1 = col;
+	curFx.color = col;
 }
 
 
@@ -83,10 +83,12 @@ void FxEngine::effectUpdate() {
 	}
 
 	//Apply the effect to all leds
-	for (int ledCnt = 0; ledCnt < NUM_LEDS; ledCnt++) {
+	int ledCnt = 0; 
+	while(ledCnt < NUM_LEDS) {
 		phaseBuf = phase.setForNextLed();
 		dim = 255 * wave[phaseBuf];
-		setColorSingle(ledCnt, col1);
+		setColorSingle(ledCnt, curFx.color);
+		ledCnt++;
 	}
 
 	// phase.debug();
@@ -97,23 +99,22 @@ void FxEngine::effectUpdate() {
 
 
 
-void FxEngine::generateWave(WaveFormType waveType) {
+void FxEngine::generateWave() {
 
 	//reset the counter
 	waveVal = 0;
 
 	//TODO: Make this work with floats!
-	highF = (float) high*0.01;
-	lowF = (float) low*0.01;
-	hiloDif = high - low;
-	hiloAvr = (high + low) / 2;
+	highF = (float)curFx.high*0.01;
+	lowF = (float)curFx.low*0.01;
+	hiloDif = curFx.high - curFx.low;
+	hiloAvr = (curFx.high + curFx.low) / 2;
 
-
-	// Sinewave
-	if (waveType == SIN) {
-
+	switch (curFx.form)
+	{
+	case SIN:
 		for (auto& w : wave) {
-			w = (hiloDif*0.5*sin(waveVal * 2 * 3.1415 / WAVE_WIDTH) + 0.5 + hiloAvr) / 100;
+			w = (hiloDif * 0.5 * sin(waveVal * 2 * 3.1415 / WAVE_WIDTH) + 0.5 + hiloAvr) / 100;
 			if (w < 0) {
 				w = 0;
 			}
@@ -122,13 +123,11 @@ void FxEngine::generateWave(WaveFormType waveType) {
 			}
 			waveVal++;
 		}
-	}
+		break;
 
-	// Ramp
-	else if (waveType == RAMP) {
-
+	case RAMP:
 		for (auto& w : wave) {
-			w = (hiloDif*waveVal/(WAVE_WIDTH-1) + hiloAvr - (hiloDif / 2)) / 100;
+			w = (hiloDif * waveVal / (WAVE_WIDTH - 1) + hiloAvr - (hiloDif / 2)) / 100;
 
 			if (w < 0) {
 				w = 0;
@@ -138,9 +137,9 @@ void FxEngine::generateWave(WaveFormType waveType) {
 			}
 			waveVal++;
 		}
-	}
+		break;
 
-	else if (waveType == INVRAMP) {
+	case INVRAMP:
 		for (auto& w : wave) {
 			w = (hiloDif * (WAVE_WIDTH - waveVal) / (WAVE_WIDTH - 1) + hiloAvr - (hiloDif / 2)) / 100;
 			waveVal++;
@@ -153,15 +152,13 @@ void FxEngine::generateWave(WaveFormType waveType) {
 			}
 		}
 
-	}
-	
-	// Step
-	else if (waveType == STEP) {
-		float hiF = (float)high*0.01;
-		float loF = (float)low*0.01;
+		break;
+	case STEP:
+		float hiF = (float)curFx.high * 0.01;
+		float loF = (float)curFx.low * 0.01;
 
 		for (auto& w : wave) {
-			if (waveVal < duty*0.01*(WAVE_WIDTH - 1)) {
+			if (waveVal < curFx.dutycycle * 0.01 * (WAVE_WIDTH - 1)) {
 				w = hiF;
 			}
 			else {
@@ -169,7 +166,10 @@ void FxEngine::generateWave(WaveFormType waveType) {
 			}
 			waveVal++;
 		}
+
+		break;
 	}
+
 
 }
 
@@ -177,23 +177,15 @@ void FxEngine::generateWave(WaveFormType waveType) {
 //Function that sets the color of a single LED
 void FxEngine::setColorSingle(uint16_t ledNr, RgbColor col) {
 	uint16_t ledIt = 3 * ledNr;
-	leds[ledIt] = col1.r * dim / 255;
-	leds[ledIt + 1] = col1.g * dim / 255;
-	leds[ledIt + 2] = col1.b * dim / 255;
+	leds[ledIt] = curFx.color.r * dim / 255;
+	leds[ledIt + 1] = curFx.color.g * dim / 255;
+	leds[ledIt + 2] = curFx.color.b * dim / 255;
 }
 
 
+// Function that calculates the increment in the wave array per frame
 void FxEngine::calcSpeedIncr() {
-	speedIncr = (int)(bpm * rate * WAVE_WIDTH) * 0.000277;			// bpm*rate*wavewidth/60 seconds/30 frames * 0.5?
-	if (dir == REVERSE)
+	speedIncr = (int)(curFx.bpm * curFx.bpm * WAVE_WIDTH) * 0.000277;			// bpm*rate*wavewidth/60 seconds/30 frames * 0.5?
+	if (curFx.direction == REVERSE)
 		speedIncr = -speedIncr;
 }
-
-
-//void FxEngine::setColorAll(RgbColor col) {
-//	for (int i = 0; i < 3 * NUM_LEDS; i += 3) {
-//		leds[i] = col.r;
-//		leds[i + 1] = col.g;
-//		leds[i + 2] = col.b;
-//	}
-//}

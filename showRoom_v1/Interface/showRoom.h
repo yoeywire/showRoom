@@ -2,7 +2,7 @@
 #define _CRT_SECURE_NO_WARNINGS
 
 #include "wx/wx.h"
-#include "main.h"
+#include "mainWindow.h"
 #include "EffectWindow.h"
 #include "../Engine/MainEngine.h"
 
@@ -15,7 +15,7 @@ public:
 private:
 	MainEngine* rgbEngine = new MainEngine;
 
-	main* mainFrame = nullptr;
+	mainWindow* mainFrame = nullptr;
 	EffectWindow* effectFrame = nullptr;
 };
 

@@ -5,9 +5,13 @@ std::ostream& operator<<(std::ostream& os, const Effect& fx)
 {
     os << fx.name << std::endl;
     os << fx.form << std::endl;
+    os << fx.direction << std::endl;
     os << fx.bpm << std::endl;
     os << fx.rate << std::endl;
     os << fx.phase << std::endl;
+    os << fx.high << std::endl;
+    os << fx.low << std::endl;
+    os << fx.dutycycle << std::endl;
     os << fx.groups << std::endl;
     os << fx.blocks << std::endl;
     os << fx.wings << std::endl;
@@ -44,6 +48,7 @@ StorageHandle::~StorageHandle()
 
 
 
+// Function that reads an effect to a file
 Effect StorageHandle::getEffect(uint16_t effNum) 
 {
     Effect effect;
@@ -67,6 +72,7 @@ Effect StorageHandle::getEffect(uint16_t effNum)
 
 
 
+// Function that stores an effect to a file
 bool StorageHandle::setEffect(uint16_t effNum, Effect effect)
 {
     std::string fileName = getFileName(EFFECT, effNum);
@@ -87,6 +93,7 @@ bool StorageHandle::setEffect(uint16_t effNum, Effect effect)
 
 
 
+// Function that returns the name of the file, dependent on the tyoe and ID
 std::string StorageHandle::getFileName(FileType type, uint16_t num) 
 {
     std::string name;

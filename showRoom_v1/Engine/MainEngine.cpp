@@ -32,7 +32,7 @@ MainEngine::MainEngine() {
 	std::thread timingTrigger(&MainEngine::updateInterrupt, this);
 	timingTrigger.detach();
 
-	Effect fx{ "Test2", RAMP, 110, 1, 360, 100, 0, 1, 1, 0, {255, 255, 0}};
+	Effect fx{ "Test1", RAMP, FORWARD, 110, 1, 360, 100, 0, 50, 1, 1, 0, {255, 255, 0}};
 	StorageHandle store;
 
 	store.setEffect(1, fx);

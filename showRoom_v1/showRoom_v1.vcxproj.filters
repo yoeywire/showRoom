@@ -18,9 +18,6 @@
     <ClCompile Include="Engine\FxPhase.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Interface\main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\Output\DataGate.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -42,15 +39,12 @@
     <ClCompile Include="Engine\MainEngine.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Interface\mainWindow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\FxPhase.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Interface\main.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="LedStripObj.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Output\DataGate.h">
@@ -81,6 +75,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Engine\MainEngine.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\mainWindow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

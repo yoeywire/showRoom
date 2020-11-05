@@ -1,6 +1,6 @@
-#include "main.h"
+#include "mainWindow.h"
 
-wxBEGIN_EVENT_TABLE(main, wxFrame)
+wxBEGIN_EVENT_TABLE(mainWindow, wxFrame)
 EVT_BUTTON(10001, OnButtonClicked)
 EVT_BUTTON(10002, OnButtonClicked)
 EVT_BUTTON(10003, OnButtonClicked)
@@ -12,7 +12,7 @@ wxEND_EVENT_TABLE()
 
 
 
-main::main(MainEngine* engine) : wxFrame(nullptr, wxID_ANY, "ShowRoom Main Window", wxPoint(20, 150), wxSize(510, 400))
+mainWindow::mainWindow(MainEngine* engine) : wxFrame(nullptr, wxID_ANY, "ShowRoom Main Window", wxPoint(20, 150), wxSize(510, 400))
 {
 	rgbEngine = engine;
 
@@ -25,8 +25,14 @@ main::main(MainEngine* engine) : wxFrame(nullptr, wxID_ANY, "ShowRoom Main Windo
 	sld3 = new wxSlider(this, 10103, 255, 0, 255, wxPoint(10, 240), wxSize(475, 15), wxSL_VALUE_LABEL);
 	sld4 = new wxSlider(this, 10104, 255, 0, 255, wxPoint(10, 300), wxSize(475, 15), wxSL_VALUE_LABEL);
 
-	//m_txt1 = new wxTextCtrl(this, wxID_ANY, "", wxPoint(10, 70), wxSize(300, 30));
-	//m_list1 = new wxListBox(this, wxID_ANY, wxPoint(10, 110), wxSize(300, 300));
+	menubar = new wxMenuBar;
+	fileMenu = new wxMenu;
+	fileMenu->Append(wxID_EXIT, wxT("&Quit"));
+	menubar->Append(fileMenu, wxT("&File"));
+	SetMenuBar(menubar);
+
+	Connect(wxID_EXIT, wxEVT_COMMAND_MENU_SELECTED,
+		wxCommandEventHandler(mainWindow::OnQuit));
 
 	wxLog* logger = new wxLogStream();
 	wxLog::SetActiveTarget(logger);
@@ -34,7 +40,7 @@ main::main(MainEngine* engine) : wxFrame(nullptr, wxID_ANY, "ShowRoom Main Windo
 
 
 
-void main::OnButtonClicked(wxCommandEvent& evt)
+void mainWindow::OnButtonClicked(wxCommandEvent& evt)
 {
 	int buttonId = evt.GetId();
 	//wxLogDebug("<main frame> Button %d pressed", buttonId);
@@ -45,13 +51,13 @@ void main::OnButtonClicked(wxCommandEvent& evt)
 
 
 
-void main::sliderChange(wxCommandEvent& evt) {
+void mainWindow::sliderChange(wxCommandEvent& evt) {
 	//wxLogDebug("<main frame> Slider changed, value: %d", evt.GetInt());
 	rgbEngine->inputSldChange(evt.GetId(), evt.GetInt());
 }
 
 
-
-void main::printLn(std::string line) {
-	//m_list1->AppendString(line);
+void mainWindow::OnQuit(wxCommandEvent& WXUNUSED(event))
+{
+	Close(true);
 }
