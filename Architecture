@@ -1,0 +1,9 @@
+The code is split up into two main parts: The GUI and the backend engine. For the GUI, not too much exciting stuff is going on at the moment, just look up some simple wxwidgets tutorials and you will be able to understand everything.
+
+The main class of the engine is the class MainEngine. This class receives updates from the GUI if a button is pressed/value is changed. The mainEngine class updates the color of the leds 30 times/second (refered to as frames in the code). It writes the pixel data to a 'mutexedData' object. This is done because the output handler class ('DataGate') runs on an independent thread and also updates 30FPS. This class sends data to the Arduino using a COM port (handling of this is done in class 'PcSerial').
+
+The pixel data is written dependent on the mode that the engine is in (this is a temporary feature). If the mode is staticMode or rainbow, the mainEngine class handles everything. When in effect mode, the mainEngine uses the class fxEngine to update the pixel data.
+
+FxEngine is the class where most magic is happening. This class makes it possible to modify parameters with mathematical waveforms like a sinewave or a step function. It uses a class to determine the phase of each LED. This is done because it will be used for other exciting stuff as well in the future.
+
+Currently everything is still very messy and experimental!!!
