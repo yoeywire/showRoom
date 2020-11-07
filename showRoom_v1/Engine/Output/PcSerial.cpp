@@ -47,7 +47,7 @@ int PcSerial::ReadByte(CString PortSpecifier)
 
 
 
-bool PcSerial::WriteComPort(CString PortSpecifier, const char* data, uint32_t byteSize)
+bool PcSerial::WriteComPort(CString PortSpecifier, std::vector<uint8_t> data, uint32_t byteSize)
 {
 	DCB dcb;
 	DWORD byteswritten;
@@ -72,7 +72,10 @@ bool PcSerial::WriteComPort(CString PortSpecifier, const char* data, uint32_t by
 	if (!SetCommState(hPort, &dcb))
 		return false;
 
-	WriteFile(hPort, data, byteSize, &byteswritten, NULL);
+	char* charData = new char[data.size()];
+	std::copy(data.begin(), data.end(), charData);
+
+	WriteFile(hPort, charData, byteSize, &byteswritten, NULL);
 
 	bool retVal = true;
 	CloseHandle(hPort); //close the handle

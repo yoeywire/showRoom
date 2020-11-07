@@ -20,7 +20,6 @@ FxEngine::FxEngine(mutexedData* RgbData) {
 
 
 
-
 void FxEngine::setFxParameter(FxParameter fxPrm, float value) {
 	wxLogDebug("<fxEngine> Updating fx");
 
@@ -67,11 +66,10 @@ void FxEngine::setEffectCol(RgbColor col) {
 
 
 
-
+// Function updates rgb values of a new frame
 void FxEngine::effectUpdate() {
-
 	uint16_t phaseBuf = 0;
-	phase.setStartPhase(startPh);		// Set the start phase to the correct value
+	phase.setStartPhase(startPh);		// Set the start phase to the correct value,
 
 	startPh += speedIncr;			// This is done for the next frame
 	
@@ -98,7 +96,7 @@ void FxEngine::effectUpdate() {
 
 
 
-
+// Function that generates a wave value array
 void FxEngine::generateWave() {
 
 	//reset the counter
@@ -115,6 +113,7 @@ void FxEngine::generateWave() {
 	case SIN:
 		for (auto& w : wave) {
 			w = (hiloDif * 0.5 * sin(waveVal * 2 * 3.1415 / WAVE_WIDTH) + 0.5 + hiloAvr) / 100;
+
 			if (w < 0) {
 				w = 0;
 			}
@@ -142,7 +141,6 @@ void FxEngine::generateWave() {
 	case INVRAMP:
 		for (auto& w : wave) {
 			w = (hiloDif * (WAVE_WIDTH - waveVal) / (WAVE_WIDTH - 1) + hiloAvr - (hiloDif / 2)) / 100;
-			waveVal++;
 
 			if (w < 0) {
 				w = 0;
@@ -150,9 +148,11 @@ void FxEngine::generateWave() {
 			else if (w > 1) {
 				w = 1;
 			}
+			waveVal++;
 		}
 
 		break;
+
 	case STEP:
 		float hiF = (float)curFx.high * 0.01;
 		float loF = (float)curFx.low * 0.01;
@@ -169,8 +169,6 @@ void FxEngine::generateWave() {
 
 		break;
 	}
-
-
 }
 
 

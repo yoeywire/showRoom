@@ -20,7 +20,7 @@ void DataGate::outputThread() {
 		char receive = pcSerial.ReadByte(PORT);							// Wait for the Arduino to allow data
 
 		if (receive == 'A') {											// If Arduino sent permission ('A')
-			const char* startAddr = leds->getData();					// Get the latest data from the memory
+			std::vector<uint8_t> startAddr = leds->getData();					// Get the latest data from the memory
 			pcSerial.WriteComPort(PORT, startAddr, num_bytes);			// Write to COM using the pcSerial object
 		}
 		

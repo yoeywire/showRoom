@@ -17,6 +17,6 @@ public:
 	//~pcSerial();
 
 	int ReadByte(CString PortSpecifier);
-	bool WriteComPort(CString PortSpecifier, const char* data, uint32_t byteSize);
+	bool WriteComPort(CString PortSpecifier, std::vector<uint8_t> data, uint32_t byteSize);
 };
 

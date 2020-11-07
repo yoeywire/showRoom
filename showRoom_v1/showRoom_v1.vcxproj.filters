@@ -24,9 +24,6 @@
     <ClCompile Include="Engine\Output\PcSerial.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Interface\showRoom.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\FxEngine.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -39,7 +36,10 @@
     <ClCompile Include="Engine\MainEngine.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Interface\mainWindow.cpp">
+    <ClCompile Include="Interface\MainWindow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Interface\ShowRoom.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -51,12 +51,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Output\PcSerial.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Utils\mutexedData.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Interface\showRoom.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Engine\FxEngine.h">
@@ -77,8 +71,17 @@
     <ClInclude Include="Engine\MainEngine.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Interface\mainWindow.h">
+    <ClInclude Include="Engine\Utils\MutexedData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Interface\MainWindow.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface\ShowRoom.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="improvements.txt" />
   </ItemGroup>
 </Project>

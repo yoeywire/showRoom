@@ -1,0 +1,8 @@
+
+- mutexedData::setData(std::string) is gemaakt voor het in 1 keer schrijven van alle data maar de argument wordt gecopied 
+  en is dus geen const ref (dit heeft enorme performance overhead)
+- de dataSize in mutexedData wordt alleen in de constructor gebruikt en niet gechecked bij bijv het setten van de data
+- c++ raad aan om niet zelf std::mutex::lock en std::mutex::unlock te callen maar een helper object zoals std::lock_guard te gebruiken
+- inputBtnChange en inputSldChange gebruiken random numeric constants zonder enige beschrijving van wat wat is, zou met ofwel comments 
+  of nog mooier een enum gefixt kunnen worden
+- veel #define macros (zie https://isocpp.org/wiki/faq/style-and-techniques#why-not-macros)

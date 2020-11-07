@@ -1,7 +1,7 @@
 #pragma warning( disable : 4309 )		//because of char range
 
-#ifndef Included_mutexedData
-#define Included_mutexedData
+#ifndef Included_MutexedData
+#define Included_MutexedData
 
 #include <string>
 #include <iostream>
@@ -17,7 +17,7 @@ private:
 	uint32_t dataSize = 296;	//hardcoded
 
 public:
-	std::string data;
+	std::vector<uint8_t> data;
 
 	mutexedData(uint32_t dataSize) {
 		wxLogDebug("<Mutexed data> Initializing mutexed data");
@@ -34,17 +34,23 @@ public:
 
 	}
 
-	const char* getData() {
+	std::vector<uint8_t> getData() {
 		mtx.lock();
-		const char* dataOut = data.c_str();
+		std::vector<uint8_t> dataOut = data;
 		mtx.unlock();
 		return dataOut;
 	}
 
-	void setData(std::string newData) {
-		mtx.lock();
-		data = newData;
-		mtx.unlock();
+	bool setData(const std::vector<uint8_t> &newData) {
+		if (newData.size() == dataSize) {
+			mtx.lock();
+			data = newData;
+			mtx.unlock();
+			return true;
+		}
+		else {
+			return false;
+		}
 	}
 };
 
