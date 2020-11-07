@@ -41,7 +41,7 @@ private:
 	void calcSpeedIncr();
 	void generateWave();
 
-	std::string leds;
+	std::vector<uint8_t> leds;
 	mutexedData* rgbData =  nullptr;
 	FxPhase phase;
 

@@ -1,6 +1,5 @@
 #pragma once
 #include <cstdint>
-#include <iostream> // std::cout
 
 
 struct RgbColor {

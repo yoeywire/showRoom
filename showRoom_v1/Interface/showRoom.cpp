@@ -1,14 +1,18 @@
-#include "showRoom.h"
+#include "ShowRoom.h"
 
-wxIMPLEMENT_APP(showRoom);
+wxIMPLEMENT_APP(ShowRoom);
 
-bool showRoom::OnInit() {
+bool ShowRoom::OnInit() {
 
-	mainFrame = new mainWindow(rgbEngine);
+	mainFrame = new mainWindow(mainEngine);
 	mainFrame->Show();
 
-	effectFrame = new EffectWindow(rgbEngine);
+	effectFrame = new EffectWindow(mainEngine);
 	effectFrame->Show();
 
 	return true;
+}
+
+ShowRoom::~ShowRoom() {
+	delete mainEngine;
 }

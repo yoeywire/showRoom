@@ -45,19 +45,20 @@ MainEngine::MainEngine() {
 MainEngine::~MainEngine() {
 	delete rgbData;
 	delete dataGateAddr;
+	delete fxEngine;
 }
 
 
 
+// Timer that calls the update function. Clock lines for debugging purposes
 void MainEngine::updateInterrupt() {
-	std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
-	std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
+	// std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
+	// std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
 
 	while (true) {
-		end = std::chrono::steady_clock::now();
-		//wxLogDebug("<TimingEngine> frame time %d [ms]", std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count());
-		begin = std::chrono::steady_clock::now();
-
+		// end = std::chrono::steady_clock::now();
+		// wxLogDebug("<TimingEngine> frame time %d [ms]", std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count());
+		// begin = std::chrono::steady_clock::now();
 		std::this_thread::sleep_for(std::chrono::microseconds(INTERVAL));
 		update();
 	}

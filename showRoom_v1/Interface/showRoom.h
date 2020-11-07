@@ -7,13 +7,14 @@
 #include "../Engine/MainEngine.h"
 
 
-class showRoom : public wxApp
+class ShowRoom : public wxApp
 {
 public:
 	virtual bool OnInit();
+	~ShowRoom();
 
 private:
-	MainEngine* rgbEngine = new MainEngine;
+	MainEngine* mainEngine = new MainEngine;
 
 	mainWindow* mainFrame = nullptr;
 	EffectWindow* effectFrame = nullptr;

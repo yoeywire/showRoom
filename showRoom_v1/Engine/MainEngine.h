@@ -48,7 +48,7 @@ private:
 	void rainbow();											// RAINBOW
 
 
-	std::string leds;										// 'uint_8 array' that holds all RGB values within the class
+	std::vector<uint8_t> leds;										// 'uint_8 array' that holds all RGB values within the class
 	mutexedData* rgbData = new mutexedData(NUM_LEDS);		// 
 
 	DataGate* dataGateAddr = new DataGate(rgbData, DATA_SIZE);
